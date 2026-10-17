@@ -3,7 +3,9 @@
 All checks are deterministic (fixed seeds). Two layers exist:
 
 * `tests/test_kalman.c` — the `make test` gate (also the CI gate),
-  ~1.13M individual assertions.
+  ~1.13M scalar assertions (most are generated inside the statistical
+  loops of a dozen test functions — a count of checks, not of
+  independent unit tests).
 * `examples/run_verification.c` — regenerates the raw evidence in
   `docs/results/` (CSVs + `verification_metrics.json`), exits non-zero if
   any section violates its bounds.
@@ -44,8 +46,10 @@ right fixed point: the closed-form (Kalata tracking-index) gain of the
 
 **Method:** iterate predict/update from a diffuse diagonal seed until
 the max relative change of `P` per iteration is below `1e-14`; compare
-all 8 entries of `K_inf` (2x4) with `diag(alpha, beta/dt)` blocks from
-the closed form. Additionally the returned prior covariance is pushed
+all 8 entries of `K_inf` (2x4, stored measurement-major — the transpose
+of the conventional state-by-measurement layout, see
+[docs/api.md](api.md)) with the rows `[alpha, beta/dt, 0, 0]` and
+`[0, 0, alpha, beta/dt]` from the closed form. Additionally the returned prior covariance is pushed
 through one full predict/update cycle and required to reproduce itself
 (DARE residual), and the decoupling of the axes (`K[0][2] = 0` etc.) is
 checked.

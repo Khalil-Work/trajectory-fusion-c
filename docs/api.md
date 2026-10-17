@@ -10,8 +10,14 @@ dynamic allocation**.
 
 * Fixed dimensions: state `KF_N = 4`, measurement `KF_M = 2`.
 * Matrices are plain `double A[4][4]` arrays (row-major).
-* Every entry-point returns a `kf_result` error code; output arrays are
-  written only on success.
+* **Error reporting**: the functions that validate inputs and can fail —
+  `kf_state_init`, `kf_predict`, `kf_update`, `kf_nees`,
+  `kf_steady_state`, `kf_steady_gain_closed_form` — return a `kf_result`
+  code and write their outputs only on success. The fixed-size
+  linear-algebra and model-matrix helpers (`kf_mat4_*`, `kf_mat2_inverse`
+  aside) return `void` and have no validation role; `kf_mat2_inverse`
+  and `kf_mat4_chol_solve` return a plain `int` status (0 ok, -1
+  singular / not positive definite).
 * **Ownership**: the caller owns every buffer. Nothing is allocated,
   retained or freed by the library, and no returned pointer outlives the
   call (`kf_result_str` returns a static string literal).
@@ -93,16 +99,19 @@ kf_result kf_nees(const kf_state *s, const double x_true[4], double *nees_out);
   [docs/model.md](model.md)). `innov_out`, `S_out`, `nis_out` are
   optional diagnostics and may each be `NULL`; `r` holds the per-axis
   measurement variances (diagonal `R`).
-* `kf_nees` computes `(x - x_true)^T P^{-1} x_true`-deviation using a
-  Cholesky solve (`KF_ERR_SINGULAR` if `P` is not positive definite; the
-  degenerate exact-estimate/zero-covariance case returns 0).
+* `kf_nees` computes the normalized estimation error squared
+  `NEES = (x - x_true)^T P^{-1} (x - x_true)` via a Cholesky solve
+  (`KF_ERR_SINGULAR` if `P` is not positive definite; the degenerate
+  exact-estimate/zero-covariance case returns 0).
 
 ## Steady-state analysis
 
 ```c
 typedef struct {
     double P[4][4];   /* steady-state prior covariance */
-    double K[2][4];   /* steady-state gain */
+    double K[2][4];   /* steady-state gain, measurement-major:
+                         the TRANSPOSE of the conventional 4x2
+                         state-by-measurement layout; x^+ = x + K^T y */
     int    iters;     /* iterations used */
     double residual;  /* final max relative change of P */
 } kf_steady_result;
@@ -116,11 +125,14 @@ kf_result kf_steady_gain_closed_form(double dt, double sigma_a, double r,
 `kf_steady_state` iterates predict/update (the discrete Riccati
 recursion) from a diffuse diagonal seed until the maximum relative change
 of `P` per iteration drops below `tol`, or `max_iter` is exhausted
-(`KF_ERR_MAXITER`). With `sigma_a == 0` it returns the exact degenerate
-solution `P = 0, K = 0` directly. `kf_steady_gain_closed_form` evaluates
-the Kalata tracking-index solution for one axis (see
+(`KF_ERR_MAXITER`). The returned gain is stored measurement-major
+(`K[2][4]`, `x^+ = x + K^T y` — the transpose of the conventional
+state-by-measurement layout). With `sigma_a == 0` it returns the exact
+degenerate solution `P = 0, K = 0` directly. `kf_steady_gain_closed_form`
+evaluates the Kalata tracking-index solution for one axis (see
 [docs/model.md](model.md)); the two axes of the 2-D problem are
-identical.
+identical, and `k_out` is `[alpha, beta/dt]` for the 1-D per-axis state
+`[p, v]`.
 
 ## Random number generator (`src/rng.h`)
 

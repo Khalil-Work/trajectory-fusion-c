@@ -85,13 +85,16 @@ the gain and update are
   P^+  = (I - K H) P^- (I - K H)^T + K R K^T        (Joseph form)
 ```
 
-The Joseph form is used because it preserves symmetry and positive
-semidefiniteness of `P^+` under round-off for any gain `K`, whereas the
-compact form `P^+ = (I - K H) P^-` is only valid for the exact optimal
-gain and can lose definiteness numerically. At these dimensions the extra
-matrix products are negligible; the tests verify that both forms agree to
-1e-12 on correlated priors and that `P` stays symmetric and
-Cholesky-factorizable over long noisy runs.
+The Joseph form is used because, unlike the compact form
+`P^+ = (I - K H) P^-` (valid only for the exactly optimal gain), it
+*reduces* the numerical loss of symmetry and positive semidefiniteness
+when the gain is inexact or rounding intervenes. In IEEE-754 arithmetic
+no covariance update formula provides an unconditional guarantee, so the
+implementation additionally symmetrizes `P^+ <- (P^+ + P^{+T})/2` after
+every step. At these dimensions the extra matrix products are negligible;
+the tests verify that both forms agree to 1e-12 on correlated priors and
+that `P` stays symmetric and Cholesky-factorizable over long noisy runs
+(a strong empirical indication, not a proof for all regimes).
 
 ## Consistency statistics
 
@@ -137,6 +140,15 @@ smaller root, chosen so `K_inf -> 0` as `Lambda -> 0` and
 `K_inf -> [1, 2/dt]` as `Lambda -> infinity`. The verification suite
 compares the numerically iterated Riccati gain against this expression
 and finds agreement to ~3e-15 (machine precision).
+
+Note on storage layout: the expressions above are per-axis (the
+conventional 1-D gain `[alpha; beta/dt]` is 2x1 for state `[p; v]`). In
+the C API the full 2-D gain is stored **measurement-major** as
+`K[2][4]` — the transpose of the conventional 4x2 state-by-measurement
+layout — so the correction reads `x^+ = x + K^T y` with the 2-vector
+innovation `y`. Row `K[0]` multiplies the x innovation, row `K[1]` the y
+innovation: `K[0] = [alpha, beta/dt, 0, 0]`, `K[1] = [0, 0, alpha,
+beta/dt]`.
 
 With `Q = 0` (no process noise) the unique non-negative DARE solution is
 `P = 0`, `K = 0`; the code returns that exact solution directly instead
