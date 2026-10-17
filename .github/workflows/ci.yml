@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Compiler version
+        run: gcc --version
+
+      - name: Build and run the C test suite (CI gate)
+        run: make test
+
+      - name: Build the demo and verification binaries
+        run: make demo verify
+
+      - name: Run the pytest wrapper around the C binary
+        run: |
+          python -m pip install --quiet pytest
+          pytest tests/test_wrapper.py -v

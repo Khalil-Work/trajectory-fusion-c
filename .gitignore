@@ -1,0 +1,6 @@
+# build artifacts
+build/
+
+# python
+__pycache__/
+.pytest_cache/
