@@ -1,0 +1,130 @@
+{
+  "generated_utc": "2026-10-17T22:03:36+00:00",
+  "compiler": {
+    "version": "gcc (MinGW-W64 x86_64-ucrt-posix-seh, built by Brecht Sanders, r2) 16.2.0",
+    "flags": "-std=c99 -Wall -Wextra -O2"
+  },
+  "tools": {
+    "python": "3.13.5",
+    "matplotlib": "3.10.0",
+    "pillow": "11.1.0"
+  },
+  "scenario": {
+    "dt_s": 0.5,
+    "steps": 240,
+    "sigma_a_m_s2": 1.2,
+    "sigma_z_m": 3.0,
+    "seed": 20261018
+  },
+  "demo_stats": {
+    "n_rows": 241,
+    "mean_nis": 2.2560661940175,
+    "mean_nees_second_half": 4.016617914190083,
+    "position_rmse_second_half": 2.643546374949668,
+    "file": "C:\\GitHub-Codex\\original-projects\\trajectory-fusion-c\\docs\\results\\trajectory.png"
+  },
+  "verification": {
+    "config": {
+      "dt": 0.5,
+      "sigma_a": 1.2,
+      "sigma_z": 3,
+      "r": 9,
+      "nis_steps": 200000,
+      "nees_runs": 1000,
+      "nees_steps": 240,
+      "seed_nis": 42,
+      "seed_base_nees": 1234
+    },
+    "nis": {
+      "mean": 1.995979556,
+      "frac_in_bounds": 0.95,
+      "lo": 0.05063561597,
+      "hi": 7.377758908,
+      "dof": 2,
+      "pass": true
+    },
+    "steady_state": {
+      "iters": 72,
+      "residual": 5.46011e-15,
+      "k1": 0.36,
+      "k2": 0.16,
+      "alpha": 0.36,
+      "beta_over_dt": 0.16,
+      "max_gain_err": 2.94209e-15,
+      "pass": true
+    },
+    "nees": {
+      "avg_final": 3.935397252,
+      "lo": 3.8265974,
+      "hi": 4.1771911,
+      "frac_in_bounds": 0.946,
+      "window_avg": 3.978458097,
+      "runs": 1000,
+      "dof": 4,
+      "pass": true
+    },
+    "zero_noise": {
+      "pos_err": 0,
+      "vel_err": 1.55431e-15,
+      "steps": 400,
+      "pass": true
+    },
+    "all_pass": true
+  },
+  "chi2_bounds_crosscheck": {
+    "chi2_dof2": {
+      "computed": [
+        0.05063561596857974,
+        7.377758908227866
+      ],
+      "compiled": [
+        0.0506356159685797,
+        7.3777589082278725
+      ],
+      "match": true
+    },
+    "chi2_dof4": {
+      "computed": [
+        0.4844185570879299,
+        11.14328678187779
+      ],
+      "compiled": [
+        0.4844185570879299,
+        11.143286781877789
+      ],
+      "match": true
+    },
+    "nees_avg_1000": {
+      "computed": [
+        3.826597419251284,
+        4.177191056286183
+      ],
+      "compiled": [
+        3.8265974192512835,
+        4.177191056286183
+      ],
+      "match": true
+    },
+    "all_match": true
+  },
+  "artifacts": {
+    "cover_plot": "docs/results/trajectory.png",
+    "nis_nees_plot": "docs/results/nis_nees.png",
+    "riccati_plot": "docs/results/riccati_convergence.png",
+    "gif": {
+      "path": "docs/results/covariance_ellipses.gif",
+      "frames": 60,
+      "size_px": [
+        1050,
+        714
+      ],
+      "duration_ms": 130
+    },
+    "csv": [
+      "docs/results/trajectory.csv",
+      "docs/results/nis_long.csv",
+      "docs/results/riccati.csv",
+      "docs/results/nees_mc.csv"
+    ]
+  }
+}

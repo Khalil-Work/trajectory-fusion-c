@@ -1,0 +1,3 @@
+# Development / CI extras (the C test binary is the gate; pytest only wraps it)
+
+pytest==8.3.4
