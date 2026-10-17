@@ -121,7 +121,9 @@ kf_result kf_nees(const kf_state *s, const double x_true[KF_N],
 
 typedef struct {
     double P[KF_N][KF_N];  /* steady-state *prior* (predicted) covariance */
-    double K[KF_M][KF_N];  /* steady-state gain                            */
+    double K[KF_M][KF_N];  /* steady-state gain, measurement-major
+                              (transpose of the conventional KF_N x KF_M
+                              layout): the update is x += K^T y          */
     int    iters;          /* iterations used                              */
     double residual;       /* final max relative change of P per iteration */
 } kf_steady_result;

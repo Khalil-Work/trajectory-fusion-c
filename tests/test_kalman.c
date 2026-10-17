@@ -225,7 +225,8 @@ static void test_update(void)
     CHECK_NEAR(s.x[0], 1.0, 1e-15, "post-update x[0]");
     CHECK_NEAR(s.x[1], 0.0, 1e-15, "post-update x[1] (no cross term)");
     /* Joseph: P' = (1-k)^2*4 + k^2*4 = 2, identical to the naive (1-k)*4
-     * here; the Joseph form is used for its guaranteed symmetry/PSD. */
+     * here; the Joseph form is used to reduce numerical loss of
+     * symmetry/PSD (no unconditional floating-point guarantee). */
     CHECK_NEAR(s.P[0][0], 2.0, 1e-12, "post-update P[0][0] (Joseph)");
     CHECK_NEAR(s.P[1][1], 4.0, 1e-12, "post-update P[1][1]");
     CHECK_NEAR(s.P[2][2], 2.0, 1e-12, "post-update P[2][2]");
