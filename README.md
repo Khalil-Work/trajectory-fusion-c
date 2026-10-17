@@ -6,7 +6,9 @@
 written by the C program `examples/traj_demo.c` (gcc 16.2.0, `-std=c99 -O2`,
 seed 20261018: dt = 0.5 s, 240 steps, sigma_a = 1.2 m/s^2, sigma_z = 3 m).
 60 frames, one per 4th filter step; the red ellipse is the 2-sigma position
-covariance P[px,py] from the same run — no synthetic data.*
+covariance P[px,py] from the same run. All plotted values come from the
+recorded C simulation — a synthetic, model-generated benchmark trajectory —
+with no hand-drawn or decorative elements.*
 
 Native C99 constant-velocity Kalman filter with serious covariance
 verification: Joseph-form updates, chi-square consistency checks (NIS/NEES),
@@ -17,8 +19,8 @@ RNG, the filter and the tests are all written from scratch in C.
 ## Purpose and scope
 
 Track a 2-D target that moves with (noisy) constant velocity from noisy
-position measurements, and *prove the implementation right* the way
-tracking engineers do:
+position measurements, and verify the implementation the way tracking
+engineers do:
 
 * **Innovation consistency** — NIS behaves as chi-square(2).
 * **Covariance correctness** — Monte-Carlo NEES average falls inside the
@@ -46,26 +48,44 @@ F = [[1, dt, 0, 0],       H = [[1, 0, 0, 0],
 Process noise is the piecewise-white acceleration model
 `Q_axis = sigma_a^2 [[dt^4/4, dt^3/2], [dt^3/2, dt^2]]`. The measurement
 update uses the **Joseph form**
-`P+ = (I-KH) P- (I-KH)^T + K R K^T`, which keeps `P` symmetric and positive
-semidefinite under round-off. Full derivations and units:
-[docs/model.md](docs/model.md).
+`P+ = (I-KH) P- (I-KH)^T + K R K^T`, chosen because it strongly reduces
+numerical loss of positive semi-definiteness relative to the compact form
+`(I-KH)P-` — floating-point arithmetic gives no unconditional guarantee,
+and the implementation additionally symmetrizes `P` after every step.
+Full derivations and units: [docs/model.md](docs/model.md).
 
 ## Quick start
 
 ```sh
-# tests (the CI gate)
+# tests (the CI gate) -- the Makefile creates build/ as needed
 make test
 
-# or build the demo directly with one gcc call
-gcc -O2 -std=c99 src/kalman.c src/rng.c examples/traj_demo.c -o build/traj_demo
-./build/traj_demo                       # writes docs/results/trajectory.csv
+# build + run the demo (writes docs/results/trajectory.csv)
+make demo
 
 # regenerate all results (CSVs, plots, GIF, run_summary.json)
 make results                            # needs python3 + matplotlib + pillow
 ```
 
+The Makefile is the portable entry point (on Windows use `mingw32-make`).
+To build the demo directly with gcc, create the output directory first —
+it is not in the repository (POSIX sh, then the Windows equivalent):
+
+```sh
+mkdir -p build
+gcc -std=c99 -Wall -Wextra -O2 src/kalman.c src/rng.c examples/traj_demo.c \
+    -lm -o build/traj_demo
+./build/traj_demo                       # Windows: build\traj_demo.exe
+```
+
+```bat
+if not exist build mkdir build
+gcc -std=c99 -Wall -Wextra -O2 src\kalman.c src\rng.c examples\traj_demo.c ^
+    -lm -o build\traj_demo
+build\traj_demo.exe
+```
+
 Build flags used and verified warning-free: `-std=c99 -Wall -Wextra -O2`.
-On Windows the Makefile works with `mingw32-make`.
 
 ## Architecture
 
@@ -102,7 +122,9 @@ Raw evidence: `docs/results/` (`trajectory.csv`, `nis_long.csv`,
 
 ## Verification summary
 
-* `make test` runs 1,131,438 assertions: linalg identities, hand-computed
+* `make test` runs 1,131,438 scalar assertions — a handful of test
+  functions whose statistical loops generate most of the checks, not that
+  many independent unit tests: linalg identities, hand-computed
   predict/update values, Joseph-vs-naive agreement, input validation
   (negative variance, NaN/Inf, dt <= 0, asymmetric P all rejected),
   long-run symmetry/positive-definiteness, steady state vs closed form,
