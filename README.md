@@ -160,3 +160,6 @@ initialization).
 ## License
 
 MIT — see [LICENSE](LICENSE). © 2026 MOHAMMED AHMED.
+
+
+Calendar metadata: [date-record disclosure](docs/CALENDAR_HISTORY.md). Historical calendar-record author dates are synthetic; original software commits and actual committer dates are preserved.
