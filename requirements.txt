@@ -1,0 +1,5 @@
+# Requirements for regenerating the results (plots, GIF, run summary)
+
+matplotlib==3.10.0
+numpy==2.1.3
+pillow==11.0.0
