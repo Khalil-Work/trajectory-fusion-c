@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/banner.svg" alt="Trajectory Fusion banner: true path with noisy measurements and shrinking covariance ellipses" width="100%">
+<img src="docs/banner.gif" alt="Trajectory Fusion animated banner: target moving along a path with its covariance ellipse and twinkling measurements" width="100%">
 
 # 🛰️ Trajectory Fusion
 
