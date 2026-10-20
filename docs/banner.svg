@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300" role="img" aria-label="Trajectory Fusion banner">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1d33"/>
+      <stop offset="1" stop-color="#081221"/>
+    </linearGradient>
+    <marker id="parr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1 L 8 5 L 0 9 z" fill="#7fd1f0"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="300" fill="url(#bg)"/>
+  <!-- tracking scene: noisy measurements, true path, covariance ellipse -->
+  <g transform="translate(70,40)">
+    <!-- true trajectory -->
+    <path d="M 20 190 C 120 170, 200 120, 280 95 S 430 60, 490 45" stroke="#7fd1f0" stroke-width="4" fill="none" marker-end="url(#parr)"/>
+    <!-- noisy measurements -->
+    <g fill="#e8b04b" opacity="0.9">
+      <circle cx="38" cy="181" r="5"/><circle cx="80" cy="176" r="5"/><circle cx="122" cy="156" r="5"/>
+      <circle cx="163" cy="151" r="5"/><circle cx="205" cy="128" r="5"/><circle cx="247" cy="118" r="5"/>
+      <circle cx="288" cy="99" r="5"/><circle cx="330" cy="95" r="5"/><circle cx="372" cy="76" r="5"/>
+      <circle cx="414" cy="70" r="5"/><circle cx="456" cy="55" r="5"/>
+    </g>
+    <!-- covariance ellipses shrinking along track -->
+    <ellipse cx="120" cy="156" rx="34" ry="22" fill="none" stroke="#b23a48" stroke-width="2.5" opacity="0.95"/>
+    <ellipse cx="260" cy="112" rx="22" ry="14" fill="none" stroke="#b23a48" stroke-width="2.5" opacity="0.85"/>
+    <ellipse cx="400" cy="73" rx="13" ry="8" fill="none" stroke="#b23a48" stroke-width="2.5" opacity="0.8"/>
+    <text x="20" y="230" fill="#7fd1f0" font-family="Segoe UI, Arial, sans-serif" font-size="16">true path (CV model)</text>
+    <text x="230" y="230" fill="#e8b04b" font-family="Segoe UI, Arial, sans-serif" font-size="16">noisy z = Hx + v</text>
+    <text x="410" y="230" fill="#b23a48" font-family="Segoe UI, Arial, sans-serif" font-size="16">2σ P</text>
+  </g>
+  <!-- wordmark -->
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <text x="600" y="115" fill="#ffffff" font-size="56" font-weight="800" letter-spacing="1">Trajectory <tspan fill="#7fd1f0">Fusion</tspan></text>
+    <text x="602" y="158" fill="#9fb8ce" font-size="21">native C99 Kalman filter · Joseph form · NIS/NEES</text>
+    <text x="602" y="196" fill="#5b7a99" font-family="Consolas, monospace" font-size="15">zero dependencies · Riccati vs Kalata closed form</text>
+  </g>
+</svg>
