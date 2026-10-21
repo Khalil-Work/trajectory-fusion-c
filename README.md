@@ -67,11 +67,11 @@ flowchart LR
     A[x, P prior] --> B[predict:<br/>x = F x, P = F P Fᵀ + Q]
     B --> C[measure z = Hx + v]
     C --> D[innovation y = z − H x]
-    D --> E[gain K = P Hᵀ (H P Hᵀ + R)⁻¹]
+    D --> E["gain K = P Hᵀ (H P Hᵀ + R)⁻¹"]
     E --> F[Joseph update:<br/>P+ = (I−KH)P(I−KH)ᵀ + KRKᵀ]
     F --> G[symmetrize P]
     G --> A
-    D --> H[NIS = yᵀ S⁻¹ y<br/>chi-square(2) gate]
+    D --> H["NIS = yᵀ S⁻¹ y<br/>chi-square(2) gate"]
 ```
 
 ## ⚡ Quick start
