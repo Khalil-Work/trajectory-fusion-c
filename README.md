@@ -11,13 +11,13 @@ the iterated Riccati gain against the closed-form steady-state solution. No exte
 dependencies — the linear algebra, the RNG, the filter and the tests are all written
 from scratch in C.**
 
-[![tests](https://github.com/khalil-official/trajectory-fusion-c/actions/workflows/ci.yml/badge.svg)](https://github.com/khalil-official/trajectory-fusion-c/actions/workflows/ci.yml)
+[![tests](https://github.com/khalil-work/trajectory-fusion-c/actions/workflows/ci.yml/badge.svg)](https://github.com/khalil-work/trajectory-fusion-c/actions/workflows/ci.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![language](https://img.shields.io/badge/language-C99-blue.svg)](src)
 [![deps](https://img.shields.io/badge/dependencies-zero-9cf.svg)](docs/verification.md)
 [![checks](https://img.shields.io/badge/assertions-1.13M-orange.svg)](tests)
-[![repo stars](https://img.shields.io/github/stars/khalil-official/trajectory-fusion-c?style=flat&color=yellow)](https://github.com/khalil-official/trajectory-fusion-c/stargazers)
-[![last commit](https://img.shields.io/github/last-commit/khalil-official/trajectory-fusion-c?color=9cf)](https://github.com/khalil-official/trajectory-fusion-c/commits)
+[![repo stars](https://img.shields.io/github/stars/khalil-work/trajectory-fusion-c?style=flat&color=yellow)](https://github.com/khalil-work/trajectory-fusion-c/stargazers)
+[![last commit](https://img.shields.io/github/last-commit/khalil-work/trajectory-fusion-c?color=9cf)](https://github.com/khalil-work/trajectory-fusion-c/commits)
 
 [Quick start](#-quick-start) · [Model](#-model-summary) · [Animation](#%EF%B8%8F-results-gallery) · [Metrics](#-metrics-real-numbers-from-the-committed-run) · [References](#-references)
 
