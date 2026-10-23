@@ -19,7 +19,7 @@ from scratch in C.**
 [![repo stars](https://img.shields.io/github/stars/khalil-work/trajectory-fusion-c?style=flat&color=yellow)](https://github.com/khalil-work/trajectory-fusion-c/stargazers)
 [![last commit](https://img.shields.io/github/last-commit/khalil-work/trajectory-fusion-c?color=9cf)](https://github.com/khalil-work/trajectory-fusion-c/commits)
 
-[Quick start](#-quick-start) · [Model](#-model-summary) · [Animation](#%EF%B8%8F-results-gallery) · [Metrics](#-metrics-real-numbers-from-the-committed-run) · [References](#-references)
+[Homepage](https://khalil-work.github.io) · [Quick start](#-quick-start) · [Model](#-model-summary) · [Animation](#%EF%B8%8F-results-gallery) · [Metrics](#-metrics-real-numbers-from-the-committed-run) · [References](#-references)
 
 </div>
 
